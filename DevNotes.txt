@@ -1,0 +1,2 @@
+Original article:
+	http://bitoftech.net/2014/10/27/json-web-token-asp-net-web-api-2-jwt-owin-authorization-server/
