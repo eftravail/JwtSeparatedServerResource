@@ -4,9 +4,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Configuration;
 using System.Web.Http;
 
 namespace AuthorizationServer.Api
@@ -30,15 +28,20 @@ namespace AuthorizationServer.Api
 
         public void ConfigureOAuth(IAppBuilder app)
         {
+            int ticketTimespan;
+            int.TryParse(ConfigurationManager.AppSettings["TicketLifeInMinutes"], out ticketTimespan);
+
+            if (ticketTimespan == 0)
+                ticketTimespan = 30;
 
             OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
             {
                 //For Dev enviroment only (on production should be AllowInsecureHttp = false)
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/oauth2/token"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(ticketTimespan),
                 Provider = new CustomOAuthProvider(),
-                AccessTokenFormat = new CustomJwtFormat("http://jwtauthzsrv.azurewebsites.net")
+                AccessTokenFormat = new CustomJwtFormat(ConfigurationManager.AppSettings["issuer"])
             };
 
             // OAuth 2.0 Bearer Access Token Generation

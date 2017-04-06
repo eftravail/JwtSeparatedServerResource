@@ -3,11 +3,8 @@ using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.Jwt;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Configuration;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 
 namespace ResourceServer.Api
@@ -30,9 +27,9 @@ namespace ResourceServer.Api
 
         public void ConfigureOAuth(IAppBuilder app)
         {
-            var issuer = "http://jwtauthzsrv.azurewebsites.net";
-            var audience = "099153c2625149bc8ecb3e85e03f0022";
-            var secret = TextEncodings.Base64Url.Decode("IxrAjDoa2FqElO7IhrSrUJELhUckePEPVpaePlS_Xaw");
+            var issuer = ConfigurationManager.AppSettings["issuer"];
+            var audience = ConfigurationManager.AppSettings["audience"];
+            var secret = TextEncodings.Base64Url.Decode(ConfigurationManager.AppSettings["secret"]);
 
             // Api controllers with an [Authorize] attribute will be validated with JWT
             app.UseJwtBearerAuthentication(
