@@ -8,6 +8,7 @@ namespace AuthorizationServer.Api
 {
     public static class AudiencesStore
     {
+        //NOTE: Would want to store this in a database rather than in-memory Dictionary;
         public static ConcurrentDictionary<string, Audience> AudiencesList = new ConcurrentDictionary<string, Audience>();
         
         static AudiencesStore()
